@@ -1,0 +1,4 @@
+app/code/community/CVM/GoogleTagManager                                     app/code/community/CVM/GoogleTagManager
+app/etc/modules/*                                                           app/etc/modules/
+app/design/frontend/base/default/layout/googletagmanager.xml                app/design/frontend/base/default/layout/googletagmanager.xml
+app/design/frontend/base/default/template/googletagmanager/gtm.phtml        app/design/frontend/base/default/template/googletagmanager/gtm.phtml
