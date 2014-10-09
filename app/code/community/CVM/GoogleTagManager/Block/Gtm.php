@@ -104,24 +104,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 			// Build products array.
 			foreach ($order->getAllVisibleItems() as $item) {
+                var_dump($item);
 				$product = Mage::getModel('catalog/product')->load($item->getProductId());
 				$product_categories = $product->getCategoryIds();
 				$categories = array();
 				foreach ($product_categories as $category) {
 					$categories[] = Mage::getModel('catalog/category')->load($category)->getName();
 				}
-				if (empty($products[$item->getSku()])) {
+				if (empty($products[$item->getDesigner()])) {
 					// Build all fields the first time we encounter this item.
-					$products[$item->getSku()] = array(
+					$products[$item->getDesigner()] = array(
 						'name' => $this->jsQuoteEscape(Mage::helper('core')->escapeHtml($item->getName())),
-						'sku' => $this->jsQuoteEscape(Mage::helper('core')->escapeHtml($item->getSku())),
+                        'designer' => $product->getAttributeText('designer'),
 						'category' => implode('|',$categories),
 						'price' => (double)number_format($item->getBasePrice(),2,'.',''),
 						'quantity' => (int)$item->getQtyOrdered()
 					);
 				} else {
 					// If we already have the item, update quantity.
-					$products[$item->getSku()]['quantity'] += (int)$item->getQtyOrdered();
+					$products[$item->getDesigener()]['quantity'] += (int)$item->getQtyOrdered();
 				}
 			}
 
