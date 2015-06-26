@@ -162,12 +162,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		// visitorType
 		$data['visitorType'] = (string)Mage::getModel('customer/group')->load($customer->getCustomerGroupId())->getCode();
 
-		// visitorExistingCustomer / visitorLifetimeValue
-		$orders = Mage::getResourceModel('sales/order_collection')->addFieldToSelect('*')->addFieldToFilter('customer_id',$customer->getId());
+
 		$ordersTotal = 0;
-		foreach ($orders as $order) {
-			$ordersTotal += $order->getGrandTotal();
+		if ($customer->getId() > 0) {
+			// visitorExistingCustomer / visitorLifetimeValue
+			$orders_sum = Mage::getResourceModel('sales/order_collection')->addFieldToFilter('customer_id', $customer->getId())->getSelect()->reset('columns')->columns('SUM(grand_total) as total')->query()->fetch();
+			if(isset($orders_sum['total'])) {
+				$ordersTotal = $orders_sum['total'];
+			}
 		}
+
 		if ($customer->isLoggedIn()) {
 			$data['visitorLifetimeValue'] = round($ordersTotal,2);
 		} else {
